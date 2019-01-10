@@ -8,15 +8,11 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-
-import butterknife.OnClick;
 
 public class HistoricActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,12 +47,18 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
             R.id.icon6,
             R.id.icon7
     };
+    int[] px = new int[]{
+            80,
+            130,
+            180,
+            270
+    };
 
     ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7;
     int getBackgroundColor;
     String getHistoricComment;
-    SharedPreferences mPref;
-//    TextView tvYesterday, tvBefore, tvThreeDays, tvFourDays, tvFiveDays, tvSixDays, tvOneweek;
+    private SharedPreferences mPref;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,28 +165,17 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
             getBackgroundColor = mPref.getInt("backcolorvalue" + yesterday, 5);
             LinearLayout currentLayout = findViewById(linear[i]);
             currentLayout.setBackgroundResource(backgroundcolor[getBackgroundColor]);
+
             if (getBackgroundColor == 5) {
                 currentLayout.setVisibility(View.INVISIBLE);
-            }
-            if (getBackgroundColor == 0) {
-                LinearLayout.LayoutParams dimensions = (LinearLayout.LayoutParams) currentLayout.getLayoutParams();
-                dimensions.width = dpToPixel(80);
-                currentLayout.setLayoutParams(dimensions);
-            }
-            if (getBackgroundColor == 1) {
-                LinearLayout.LayoutParams dimensions = (LinearLayout.LayoutParams) currentLayout.getLayoutParams();
-                dimensions.width = dpToPixel(130);
-                currentLayout.setLayoutParams(dimensions);
-            }
-            if (getBackgroundColor == 2) {
-                LinearLayout.LayoutParams dimensions = (LinearLayout.LayoutParams) currentLayout.getLayoutParams();
-                dimensions.width = dpToPixel(180);
-                currentLayout.setLayoutParams(dimensions);
-            }
-            if (getBackgroundColor == 3) {
-                LinearLayout.LayoutParams dimensions = (LinearLayout.LayoutParams) currentLayout.getLayoutParams();
-                dimensions.width = dpToPixel(270);
-                currentLayout.setLayoutParams(dimensions);
+            } else {
+                for (int a = 0; a < 4; a++) {
+                    if (getBackgroundColor == a) {
+                        LinearLayout.LayoutParams dimensions = (LinearLayout.LayoutParams) currentLayout.getLayoutParams();
+                        dimensions.width = dpToPixel(px[a]);
+                        currentLayout.setLayoutParams(dimensions);
+                    }
+                }
             }
         }
     }

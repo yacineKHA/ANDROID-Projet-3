@@ -97,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @OnClick(R.id.btShare)
-    public void share(){
+    public void share() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
