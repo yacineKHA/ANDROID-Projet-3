@@ -87,12 +87,13 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         icon6 = findViewById(R.id.icon6);
         icon7 = findViewById(R.id.icon7);
 
+        mPref = getSharedPreferences("preferences", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("ddMMyyyy");
         today = new Date();
         c = Calendar.getInstance();
         cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1);
-        soustraire();
+        setCurrentLayout();
         setVisibleIcons();
 
     }
@@ -124,7 +125,6 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         Date yesterDayDate;
         yesterDayDate = cal.getTime();
         yesterday = dateFormat.format(yesterDayDate);
-        mPref = getSharedPreferences("preferences", MODE_PRIVATE);
         getHistoricComment = mPref.getString("comment" + yesterday, null);
         if (getHistoricComment == null) {
             Toast.makeText(HistoricActivity.this, " " + yesterday, Toast.LENGTH_SHORT).show();
@@ -135,14 +135,10 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void setVisibleIcons() {
-        Date today = cal.getTime();
-        cal.setTime(today);
         for (int i = 0; i < 7; i++) {
             cal.add(Calendar.DAY_OF_MONTH, -i);
-            Date yesterDayDate;
-            yesterDayDate = cal.getTime();
-            yesterday = dateFormat.format(yesterDayDate);
-            mPref = getSharedPreferences("preferences", MODE_PRIVATE);
+            Date dayBefore = cal.getTime();
+            yesterday = dateFormat.format(dayBefore);
             getHistoricComment = mPref.getString("comment" + yesterday, null);
             if (getHistoricComment == null) {
                 ImageView setIcons = findViewById(icons[i]);
@@ -152,16 +148,15 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void soustraire() {
-        Date yester;
+    public void setCurrentLayout() {
+        Date date;
         c.add(Calendar.DAY_OF_MONTH, -1);
-        yester = c.getTime();
+        date = c.getTime();
         for (int i = 0; i < 7; i++) {
-            c.setTime(yester);
+            c.setTime(date);
             c.add(Calendar.DAY_OF_MONTH, -i);
-            Date yesterDayDate = c.getTime();
-            yesterday = dateFormat.format(yesterDayDate);
-            mPref = getSharedPreferences("preferences", MODE_PRIVATE);
+            Date yesterdayDate = c.getTime();
+            yesterday = dateFormat.format(yesterdayDate);
             getBackgroundColor = mPref.getInt("backcolorvalue" + yesterday, 5);
             LinearLayout currentLayout = findViewById(linear[i]);
             currentLayout.setBackgroundResource(backgroundcolor[getBackgroundColor]);
@@ -175,9 +170,11 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
                         dimensions.width = dpToPixel(px[a]);
                         currentLayout.setLayoutParams(dimensions);
                     }
+
                 }
             }
         }
+
     }
 
     //Convert DP to pixels

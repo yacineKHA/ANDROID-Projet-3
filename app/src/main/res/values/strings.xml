@@ -9,4 +9,5 @@
     <string name="hier">Hier</string>
     <string name="main_activity_title">Humeur du jour</string>
     <string name="historic_activity_title">Historique</string>
+    <string name="btShare">Share</string>
 </resources>

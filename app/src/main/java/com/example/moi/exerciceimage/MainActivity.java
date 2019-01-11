@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             R.color.banana_yellow,
             R.color.gris_perle,
     };
-    String[] moodSend = new String[]{
+    String[] stringMoodList = new String[]{
             "très mauvaise humeur :(",
             "plutôt mauvaise humeur :/",
             "neutre :|",
@@ -87,34 +87,37 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
         Date today = new Date();
         dateKey = dateFormat.format(today);
+        mPref = getSharedPreferences("preferences", MODE_PRIVATE);
 
         loadPreferences();
+        shareButtonColor();
 
         mybackground.setOnTouchListener(new OnSwipeTouchListener(this) {
             @Override
             public void onSwipeDown() {
                 smileDown();
                 savePreferences();
+                shareButtonColor();
             }
 
             @Override
             public void onSwipeUp() {
                 smileUp();
                 savePreferences();
+                shareButtonColor();
             }
         });
     }
 
     @OnClick(R.id.btShare)
     public void share() {
-        String sharedMood = new String();
+        String sharedMood = "";
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        mPref = getSharedPreferences("preferences", MODE_PRIVATE);
         currentsmile = mPref.getInt("smilevalue" + dateKey, 3);
         for (int i = 0; i < 5; i++) {
             if (currentsmile == i) {
-                sharedMood = moodSend[i];
+                sharedMood = stringMoodList[i];
             }
         }
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Voici mon humeur du jour: " + sharedMood);
@@ -129,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
         bt_ok.setOnClickListener(v -> {
             // save comment
             comment = et_comment.getText().toString();
-            mPref = getSharedPreferences("preferences", MODE_PRIVATE);
             mEdit = mPref.edit();
             mEdit.putString("comment" + dateKey, comment);
             mEdit.apply();
@@ -153,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadPreferences() {
-        mPref = getSharedPreferences("preferences", MODE_PRIVATE);
         currentsmile = mPref.getInt("smilevalue" + dateKey, 3);
         image1.setImageResource(mood[currentsmile]);
         currentbackgroundcolor = mPref.getInt("backcolorvalue" + dateKey, 3);
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void smileUp() {
         if (currentsmile == 4 && currentbackgroundcolor == 4) {
-            Toast.makeText(this, "Etes vous vraiment si heureux que ça ?", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Êtes-vous vraiment si heureux que ça ?", Toast.LENGTH_SHORT).show();
             return;
         }
         currentbackgroundcolor++;
@@ -181,13 +182,21 @@ public class MainActivity extends AppCompatActivity {
 
     public void smileDown() {
         if (currentsmile == 0 && currentbackgroundcolor == 0) {
-            Toast.makeText(this, "Etes vous vraiment si triste que ça ?", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Êtes-vous vraiment si triste que ça ?", Toast.LENGTH_SHORT).show();
             return;
         }
         currentsmile--;
         currentbackgroundcolor--;
         setCurrentbackgroundcolor();
         setCurrentsmile();
+    }
+
+    public void shareButtonColor() {
+        for (int i = 0; i < 5; i++) {
+            if (currentbackgroundcolor == i) {
+                btShare.setBackgroundResource(backgroundcolor[i]);
+            }
+        }
     }
 }
 
