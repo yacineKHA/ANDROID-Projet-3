@@ -46,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
             R.color.banana_yellow,
             R.color.gris_perle,
     };
+    String[] moodSend = new String[]{
+            "très mauvaise humeur :(",
+            "plutôt mauvaise humeur :/",
+            "neutre :|",
+            "plutôt joyeux :)",
+            "très joyeux :D"
+    };
     int currentsmile = 2;
     int currentbackgroundcolor = 2;
 
@@ -100,9 +107,17 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btShare)
     public void share() {
+        String sharedMood = new String();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+        mPref = getSharedPreferences("preferences", MODE_PRIVATE);
+        currentsmile = mPref.getInt("smilevalue" + dateKey, 3);
+        for (int i = 0; i < 5; i++) {
+            if (currentsmile == i) {
+                sharedMood = moodSend[i];
+            }
+        }
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Voici mon humeur du jour: " + sharedMood);
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
     }
@@ -155,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void smileUp() {
         if (currentsmile == 4 && currentbackgroundcolor == 4) {
-            Toast.makeText(this, "êtes vous vraiment si heureux", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Etes vous vraiment si heureux que ça ?", Toast.LENGTH_SHORT).show();
             return;
         }
         currentbackgroundcolor++;
@@ -166,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void smileDown() {
         if (currentsmile == 0 && currentbackgroundcolor == 0) {
-            Toast.makeText(this, "êtes vous vraiment si triste", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Etes vous vraiment si triste que ça ?", Toast.LENGTH_SHORT).show();
             return;
         }
         currentsmile--;
