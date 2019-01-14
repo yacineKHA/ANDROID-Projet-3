@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         Date today = new Date();
         dateKey = dateFormat.format(today);
         mPref = getSharedPreferences("preferences", MODE_PRIVATE);
-
         loadPreferences();
         shareButtonColor();
 
@@ -109,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * share
+     * Method for get the mood of the day and share it
+     */
     @OnClick(R.id.btShare)
     public void share() {
         String sharedMood = "";
@@ -125,6 +128,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(sendIntent);
     }
 
+    /**
+     * note
+     * Method to display a dialog window
+     * that integrates a save preferences for save the comment
+     */
     @OnClick(R.id.bt_addNote)
     public void note() {
         mydialog.show();
@@ -139,13 +147,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * history
+     * Method intent for start a new activity (HistoricActivity)
+     */
     @OnClick(R.id.bt_history)
     public void history() {
-
         Intent historyIntent = new Intent(this, HistoricActivity.class);
         startActivity(historyIntent);
     }
 
+    /**
+     * savePreferences
+     * Method for save the smilevalue and colorvalue to the preferences
+     */
     public void savePreferences() {
         mPref = getSharedPreferences("preferences", MODE_PRIVATE);
         mEdit = mPref.edit();
@@ -154,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
         mEdit.apply();
     }
 
+    /**
+     * loadPreferences
+     * Method for load the smilevalue and colorvalue that are saved in shared preferences
+     */
     public void loadPreferences() {
         currentsmile = mPref.getInt("smilevalue" + dateKey, 3);
         image1.setImageResource(mood[currentsmile]);
@@ -169,6 +188,10 @@ public class MainActivity extends AppCompatActivity {
         image1.setImageResource(mood[currentsmile]);
     }
 
+    /**
+     * smileUp
+     * Method for slide up (mood), synchronise mood with background's color
+     */
     public void smileUp() {
         if (currentsmile == 4 && currentbackgroundcolor == 4) {
             Toast.makeText(this, "Êtes-vous vraiment si heureux que ça ?", Toast.LENGTH_SHORT).show();
@@ -180,6 +203,10 @@ public class MainActivity extends AppCompatActivity {
         setCurrentbackgroundcolor();
     }
 
+    /**
+     * smileDown
+     * Method for slide down (mood), synchronise the mood with the background's color
+     */
     public void smileDown() {
         if (currentsmile == 0 && currentbackgroundcolor == 0) {
             Toast.makeText(this, "Êtes-vous vraiment si triste que ça ?", Toast.LENGTH_SHORT).show();
@@ -191,6 +218,10 @@ public class MainActivity extends AppCompatActivity {
         setCurrentsmile();
     }
 
+    /**
+     * shareButtonColor
+     * Method for synchronise the button's color with the background's color
+     */
     public void shareButtonColor() {
         for (int i = 0; i < 5; i++) {
             if (currentbackgroundcolor == i) {

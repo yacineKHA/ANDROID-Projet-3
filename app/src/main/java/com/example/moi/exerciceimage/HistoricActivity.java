@@ -16,12 +16,15 @@ import java.util.Date;
 
 public class HistoricActivity extends AppCompatActivity implements View.OnClickListener {
 
-    LinearLayout ll_1, ll_2, ll_3, ll_4, ll_5, ll_6, ll_7, currentLayout;
+    LinearLayout currentLayout;
     Date today;
     SimpleDateFormat dateFormat;
     Calendar c, cal;
-    String yesterday;
-    int[] backgroundcolor = new int[]{
+    String yesterday, getHistoricComment;
+    int getBackgroundColor;
+    private SharedPreferences mPref;
+
+    int[] backgroundColor = new int[]{
             R.color.faded_red,
             R.color.warm_grey,
             R.color.cornflower_blue_65,
@@ -54,38 +57,15 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
             270
     };
 
-    ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7;
-    int getBackgroundColor;
-    String getHistoricComment;
-    private SharedPreferences mPref;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.historic_layout);
 
-        ll_1 = findViewById(R.id.ll_1);
-        ll_2 = findViewById(R.id.ll_2);
-        ll_3 = findViewById(R.id.ll_3);
-        ll_4 = findViewById(R.id.ll_4);
-        ll_5 = findViewById(R.id.ll_5);
-        ll_6 = findViewById(R.id.ll_6);
-        ll_7 = findViewById(R.id.ll_7);
-        ll_1.setOnClickListener(this);
-        ll_2.setOnClickListener(this);
-        ll_3.setOnClickListener(this);
-        ll_4.setOnClickListener(this);
-        ll_5.setOnClickListener(this);
-        ll_6.setOnClickListener(this);
-        ll_7.setOnClickListener(this);
-        icon1 = findViewById(R.id.icon1);
-        icon2 = findViewById(R.id.icon2);
-        icon3 = findViewById(R.id.icon3);
-        icon4 = findViewById(R.id.icon4);
-        icon5 = findViewById(R.id.icon5);
-        icon6 = findViewById(R.id.icon6);
-        icon7 = findViewById(R.id.icon7);
+        for (int i = 0; i < 7; i++) {
+            LinearLayout currentLayout = findViewById(linear[i]);
+            currentLayout.setOnClickListener(this);
+        }
 
         mPref = getSharedPreferences("preferences", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("ddMMyyyy");
@@ -93,7 +73,7 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         c = Calendar.getInstance();
         cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -1);
-        setCurrentLayout();
+        setHistoricLayouts();
         setVisibleIcons();
 
     }
@@ -110,7 +90,10 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /**
-     * @param i
+     * refreshDate
+     * Set the calendar to the current date
+     *
+     * @param i -> to get the last seven days, to add them
      */
     public void refreshDate(int i) {
         Date today = cal.getTime();
@@ -118,6 +101,12 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         cal.add(Calendar.DAY_OF_MONTH, i);
     }
 
+    /**
+     * getComments
+     * Method for get saved comments and display them with toast
+     *
+     * @param i -> to get the last seven days comments
+     */
     public void getComments(int i) {
         Date today = cal.getTime();
         cal.setTime(today);
@@ -134,6 +123,11 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    /**
+     * setVisibleIcons
+     * Method for set the visibility of the icons when there is a saved comment
+     * "For loop" for synchronise to the last seven days
+     */
     public void setVisibleIcons() {
         for (int i = 0; i < 7; i++) {
             cal.add(Calendar.DAY_OF_MONTH, -i);
@@ -148,7 +142,11 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void setCurrentLayout() {
+    /**
+     * setHistoricLayouts
+     * It will get the saved background colors of the last seven days to set the colors of the historic layouts
+     */
+    public void setHistoricLayouts() {
         Date date;
         c.add(Calendar.DAY_OF_MONTH, -1);
         date = c.getTime();
@@ -159,7 +157,7 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
             yesterday = dateFormat.format(yesterdayDate);
             getBackgroundColor = mPref.getInt("backcolorvalue" + yesterday, 5);
             LinearLayout currentLayout = findViewById(linear[i]);
-            currentLayout.setBackgroundResource(backgroundcolor[getBackgroundColor]);
+            currentLayout.setBackgroundResource(backgroundColor[getBackgroundColor]);
 
             if (getBackgroundColor == 5) {
                 currentLayout.setVisibility(View.INVISIBLE);
@@ -170,13 +168,17 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
                         dimensions.width = dpToPixel(px[a]);
                         currentLayout.setLayoutParams(dimensions);
                     }
-
                 }
             }
         }
-
     }
 
+    /**
+     * dpToPixel
+     *
+     * @param dp -> number of dp that will be converted to pixel
+     * @return
+     */
     //Convert DP to pixels
     public static int dpToPixel(int dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
