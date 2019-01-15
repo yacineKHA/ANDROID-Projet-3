@@ -10,4 +10,8 @@
     <string name="main_activity_title">Humeur du jour</string>
     <string name="historic_activity_title">Historique</string>
     <string name="btShare">Share</string>
+    <string name="image_of_mood">moods visual</string>
+    <string name="historic_icon">historic icon: for show historic of moods</string>
+    <string name="note_icon">note icon for add a comment</string>
+    <string name="comment_icon">Icon set visible when there is a comment</string>
 </resources>

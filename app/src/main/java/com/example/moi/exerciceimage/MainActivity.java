@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         tv_comment = mydialog.findViewById(R.id.tv_comment);
 
         //date key
-        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", Locale.FRANCE);
         Date today = new Date();
         dateKey = dateFormat.format(today);
         mPref = getSharedPreferences("preferences", MODE_PRIVATE);

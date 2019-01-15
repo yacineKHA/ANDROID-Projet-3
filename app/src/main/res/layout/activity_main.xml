@@ -13,8 +13,8 @@
 
     <ImageView
         android:id="@+id/image1"
-        android:layout_width="247dp"
-        android:layout_height="264dp"
+        android:layout_width="@dimen/size_image_width"
+        android:layout_height="@dimen/size_image_height"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:layout_marginTop="124dp"
@@ -22,7 +22,7 @@
         android:layout_marginBottom="8dp"
         android:layout_weight="1"
         android:adjustViewBounds="false"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/image_of_mood"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +38,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
+        android:contentDescription="@string/historic_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -54,14 +55,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
+        android:contentDescription="@string/note_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.99"
-        app:srcCompat="@drawable/ic_note_add_black"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/ic_note_add_black" />
 
     <Button
         android:id="@+id/btShare"

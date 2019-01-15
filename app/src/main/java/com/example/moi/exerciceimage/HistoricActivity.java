@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class HistoricActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -68,7 +69,7 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         }
 
         mPref = getSharedPreferences("preferences", MODE_PRIVATE);
-        dateFormat = new SimpleDateFormat("ddMMyyyy");
+        dateFormat = new SimpleDateFormat("ddMMyyyy", Locale.FRANCE);
         today = new Date();
         c = Calendar.getInstance();
         cal = Calendar.getInstance();
@@ -116,9 +117,9 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         yesterday = dateFormat.format(yesterDayDate);
         getHistoricComment = mPref.getString("comment" + yesterday, null);
         if (getHistoricComment == null) {
-            Toast.makeText(HistoricActivity.this, " " + yesterday, Toast.LENGTH_SHORT).show();
+            Toast.makeText(HistoricActivity.this, " ", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(HistoricActivity.this, getHistoricComment + yesterday, Toast.LENGTH_SHORT).show();
+            Toast.makeText(HistoricActivity.this, getHistoricComment, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -177,9 +178,8 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
      * dpToPixel
      *
      * @param dp -> number of dp that will be converted to pixel
-     * @return
+     * @return -> return the result in pixel
      */
-    //Convert DP to pixels
     public static int dpToPixel(int dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);

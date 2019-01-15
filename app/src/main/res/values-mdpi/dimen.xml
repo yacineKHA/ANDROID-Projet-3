@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //Smiley
+    <dimen name="size_image_height">300dp</dimen>
+    <dimen name="size_image_width">300dp</dimen>
+</resources>
