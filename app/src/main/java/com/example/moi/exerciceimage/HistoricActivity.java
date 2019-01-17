@@ -17,7 +17,6 @@ import java.util.Locale;
 
 public class HistoricActivity extends AppCompatActivity implements View.OnClickListener {
 
-    LinearLayout currentLayout;
     Date today;
     SimpleDateFormat dateFormat;
     Calendar c, cal;

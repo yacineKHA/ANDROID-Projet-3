@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.smiley_happy,
             R.drawable.smiley_super_happy
     };
-    int[] backgroundcolor = new int[]{
+    int[] backgroundColor = new int[]{
             R.color.faded_red,
             R.color.warm_grey,
             R.color.cornflower_blue_65,
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
             "plutôt joyeux :)",
             "très joyeux :D"
     };
-    int currentsmile = 2;
-    int currentbackgroundcolor = 2;
+    int currentSmile = 2;
+    int currentBackgroundColor = 2;
 
     private SharedPreferences mPref;
     private SharedPreferences.Editor mEdit;
@@ -64,10 +64,9 @@ public class MainActivity extends AppCompatActivity {
     EditText et_comment;
     String comment;
     TextView tv_comment;
-    String tempsactuel;
     String dateKey;
-    Dialog mydialog;
-    String getCurrentDateTime;
+    Dialog myDialog;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -76,13 +75,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mydialog = new Dialog(this);
-        mydialog.setContentView(R.layout.activity_image2);
-        tempsactuel = getCurrentDateTime;
-        bt_cancel = mydialog.findViewById(R.id.bt_cancel);
-        bt_ok = mydialog.findViewById(R.id.bt_ok);
-        et_comment = mydialog.findViewById(R.id.et_comment);
-        tv_comment = mydialog.findViewById(R.id.tv_comment);
+        myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.activity_image2);
+        bt_cancel = myDialog.findViewById(R.id.bt_cancel);
+        bt_ok = myDialog.findViewById(R.id.bt_ok);
+        et_comment = myDialog.findViewById(R.id.et_comment);
+        tv_comment = myDialog.findViewById(R.id.tv_comment);
 
         //date key
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", Locale.FRANCE);
@@ -118,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
         String sharedMood = "";
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        currentsmile = mPref.getInt("smilevalue" + dateKey, 3);
+        currentSmile = mPref.getInt("smilevalue" + dateKey, 3);
         for (int i = 0; i < 5; i++) {
-            if (currentsmile == i) {
+            if (currentSmile == i) {
                 sharedMood = stringMoodList[i];
             }
         }
@@ -136,15 +134,15 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.bt_addNote)
     public void note() {
-        mydialog.show();
-        bt_cancel.setOnClickListener(v -> mydialog.cancel());
+        myDialog.show();
+        bt_cancel.setOnClickListener(v -> myDialog.cancel());
         bt_ok.setOnClickListener(v -> {
             // save comment
             comment = et_comment.getText().toString();
             mEdit = mPref.edit();
             mEdit.putString("comment" + dateKey, comment);
             mEdit.apply();
-            mydialog.cancel();
+            myDialog.cancel();
         });
     }
 
@@ -165,8 +163,8 @@ public class MainActivity extends AppCompatActivity {
     public void savePreferences() {
         mPref = getSharedPreferences("preferences", MODE_PRIVATE);
         mEdit = mPref.edit();
-        mEdit.putInt("smilevalue" + dateKey, currentsmile);
-        mEdit.putInt("backcolorvalue" + dateKey, currentbackgroundcolor);
+        mEdit.putInt("smilevalue" + dateKey, currentSmile);
+        mEdit.putInt("backcolorvalue" + dateKey, currentBackgroundColor);
         mEdit.apply();
     }
 
@@ -175,18 +173,18 @@ public class MainActivity extends AppCompatActivity {
      * Method for load the smilevalue and colorvalue that are saved in shared preferences
      */
     public void loadPreferences() {
-        currentsmile = mPref.getInt("smilevalue" + dateKey, 3);
-        image1.setImageResource(mood[currentsmile]);
-        currentbackgroundcolor = mPref.getInt("backcolorvalue" + dateKey, 3);
-        mybackground.setBackgroundResource(backgroundcolor[currentbackgroundcolor]);
+        currentSmile = mPref.getInt("smilevalue" + dateKey, 3);
+        image1.setImageResource(mood[currentSmile]);
+        currentBackgroundColor = mPref.getInt("backcolorvalue" + dateKey, 3);
+        mybackground.setBackgroundResource(backgroundColor[currentBackgroundColor]);
     }
 
     public void setCurrentbackgroundcolor() {
-        mybackground.setBackgroundResource(backgroundcolor[currentbackgroundcolor]);
+        mybackground.setBackgroundResource(backgroundColor[currentBackgroundColor]);
     }
 
     public void setCurrentsmile() {
-        image1.setImageResource(mood[currentsmile]);
+        image1.setImageResource(mood[currentSmile]);
     }
 
     /**
@@ -194,12 +192,12 @@ public class MainActivity extends AppCompatActivity {
      * Method for slide up (mood), synchronise mood with background's color
      */
     public void smileUp() {
-        if (currentsmile == 4 && currentbackgroundcolor == 4) {
+        if (currentSmile == 4 && currentBackgroundColor == 4) {
             Toast.makeText(this, "Êtes-vous vraiment si heureux que ça ?", Toast.LENGTH_SHORT).show();
             return;
         }
-        currentbackgroundcolor++;
-        currentsmile++;
+        currentBackgroundColor++;
+        currentSmile++;
         setCurrentsmile();
         setCurrentbackgroundcolor();
     }
@@ -209,12 +207,12 @@ public class MainActivity extends AppCompatActivity {
      * Method for slide down (mood), synchronise the mood with the background's color
      */
     public void smileDown() {
-        if (currentsmile == 0 && currentbackgroundcolor == 0) {
+        if (currentSmile == 0 && currentBackgroundColor == 0) {
             Toast.makeText(this, "Êtes-vous vraiment si triste que ça ?", Toast.LENGTH_SHORT).show();
             return;
         }
-        currentsmile--;
-        currentbackgroundcolor--;
+        currentSmile--;
+        currentBackgroundColor--;
         setCurrentbackgroundcolor();
         setCurrentsmile();
     }
@@ -225,8 +223,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void shareButtonColor() {
         for (int i = 0; i < 5; i++) {
-            if (currentbackgroundcolor == i) {
-                btShare.setBackgroundResource(backgroundcolor[i]);
+            if (currentBackgroundColor == i) {
+                btShare.setBackgroundResource(backgroundColor[i]);
             }
         }
     }

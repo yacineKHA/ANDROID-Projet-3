@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MoodApp</string>
+    <string name="app_name">MoodTracker</string>
     <string name="il_y_a_une_semaine">Il y a une semaine</string>
     <string name="il_y_a_six_jours">Il y a six jours</string>
     <string name="il_y_a_cinq_jours">Il y a cinq jours</string>
@@ -14,4 +14,8 @@
     <string name="historic_icon">historic icon: for show historic of moods</string>
     <string name="note_icon">note icon for add a comment</string>
     <string name="comment_icon">Icon set visible when there is a comment</string>
+    <string name="comment">Commentaire</string>
+    <string name="ok">Valider</string>
+    <string name="write_comment">Écrire un commentaire</string>
+    <string name="Cancel">Annuler</string>
 </resources>
