@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * @author Yacine
+ * @since 2018
+ * MainActivity manages the main activity, selecting the mood, the button's access of add comment, and the button's access of the historic activity.
+ */
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.image1)
     ImageView image1;
@@ -54,8 +60,16 @@ public class MainActivity extends AppCompatActivity {
             "plutôt joyeux :)",
             "très joyeux :D"
     };
-    int currentSmile = 2;
-    int currentBackgroundColor = 2;
+    int[] soundList = new int[]{
+            R.raw.c3_1,
+            R.raw.c4_2,
+            R.raw.c5_3,
+            R.raw.c6_4,
+            R.raw.c7_5
+    };
+    int currentSmile = 3;
+    int currentBackgroundColor = 3;
+    MediaPlayer mplayer;
 
     private SharedPreferences mPref;
     private SharedPreferences.Editor mEdit;
@@ -82,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         et_comment = myDialog.findViewById(R.id.et_comment);
         tv_comment = myDialog.findViewById(R.id.tv_comment);
 
-        //date key
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", Locale.FRANCE);
         Date today = new Date();
         dateKey = dateFormat.format(today);
@@ -156,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(historyIntent);
     }
 
+    public void setCurrentSound() {
+        mplayer = MediaPlayer.create(this, soundList[currentSmile]);
+    }
+
     /**
      * savePreferences
      * Method for save the smilevalue and colorvalue to the preferences
@@ -177,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         image1.setImageResource(mood[currentSmile]);
         currentBackgroundColor = mPref.getInt("backcolorvalue" + dateKey, 3);
         mybackground.setBackgroundResource(backgroundColor[currentBackgroundColor]);
+        mplayer = MediaPlayer.create(this, soundList[currentSmile]);
     }
 
     public void setCurrentbackgroundcolor() {
@@ -196,10 +214,13 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Êtes-vous vraiment si heureux que ça ?", Toast.LENGTH_SHORT).show();
             return;
         }
+        mplayer.release();
         currentBackgroundColor++;
         currentSmile++;
         setCurrentsmile();
         setCurrentbackgroundcolor();
+        setCurrentSound();
+        mplayer.start();
     }
 
     /**
@@ -211,10 +232,14 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Êtes-vous vraiment si triste que ça ?", Toast.LENGTH_SHORT).show();
             return;
         }
+        mplayer.release();
         currentSmile--;
         currentBackgroundColor--;
         setCurrentbackgroundcolor();
         setCurrentsmile();
+        setCurrentSound();
+        mplayer.start();
+
     }
 
     /**

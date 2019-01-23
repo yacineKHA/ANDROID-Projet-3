@@ -15,7 +15,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class HistoricActivity extends AppCompatActivity implements View.OnClickListener {
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * @author Yacine
+ * @since 2018
+ * HistoricActivity gives an access to the mood's historic and comments of the last seven days.
+ */
+public class HistoricActivity extends AppCompatActivity {
 
     Date today;
     SimpleDateFormat dateFormat;
@@ -61,11 +69,7 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.historic_layout);
-
-        for (int i = 0; i < 7; i++) {
-            LinearLayout currentLayout = findViewById(linear[i]);
-            currentLayout.setOnClickListener(this);
-        }
+        ButterKnife.bind(this);
 
         mPref = getSharedPreferences("preferences", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("ddMMyyyy", Locale.FRANCE);
@@ -75,25 +79,20 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
         cal.add(Calendar.DAY_OF_MONTH, -1);
         setHistoricLayouts();
         setVisibleIcons();
-
     }
 
-    @Override
-    public void onClick(View v) {
-        for (int i = 0; i < 7; i++) {
-            LinearLayout currentLayout = findViewById(linear[i]);
-            if (v == currentLayout) {
-                getComments(i);
-                refreshDate(i);
-            }
-        }
+    @OnClick({R.id.ll_1, R.id.ll_2, R.id.ll_3, R.id.ll_4, R.id.ll_5, R.id.ll_6, R.id.ll_7})
+    public void onHistoryClick(View v) {
+        int i = Integer.parseInt(v.getTag().toString());
+        i--;
+        getComments(i);
+        refreshDate(i);
     }
 
     /**
      * refreshDate
      * Set the calendar to the current date
-     *
-     * @param i -> to get the last seven days, to add them
+     * @param i to get the last seven days, to add them
      */
     public void refreshDate(int i) {
         Date today = cal.getTime();
@@ -105,7 +104,7 @@ public class HistoricActivity extends AppCompatActivity implements View.OnClickL
      * getComments
      * Method for get saved comments and display them with toast
      *
-     * @param i -> to get the last seven days comments
+     * @param i to get the last seven days comments
      */
     public void getComments(int i) {
         Date today = cal.getTime();
